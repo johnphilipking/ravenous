@@ -17,6 +17,12 @@
     justify-content: center;
     margin: 3rem auto 1rem;
     box-sizing: border-box;
+    border-bottom: 1px solid #fff;
+    padding: 0 0 .5rem;
+  }
+
+  .sortOption.selected {
+    color:gold;
   }
 
   .sortOptions div {
