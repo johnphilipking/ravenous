@@ -1,13 +1,20 @@
-import mockData from './mockData.json';
-import './App.css';
-import BusinessList from './Business';
-import SearchBar from './SearchBar';
+import React, { useState } from "react";
+//import mockData from "./mockData.json";
+import "./App.css";
+import BusinessList from "./Business";
+import SearchBar from "./SearchBar";
+
 
 function App() {
+
+  //let searchResult = [];
+  const [searchResult, setSearchResult] = useState([]);
+
   return (
     <div className="App">
-      <SearchBar />
-      <BusinessList dataSet={mockData} />
+      <header class="header"><h1 className="poppins-semibold">Ravenous</h1></header>
+      <SearchBar setSearchResult={setSearchResult} />
+      <BusinessList searchResult={searchResult} />
     </div>
   );
 }

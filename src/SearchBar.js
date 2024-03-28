@@ -1,10 +1,22 @@
 import React, { useState } from "react";
+import YelpSearch from "./utils/YelpSearch";
 import "./SearchBar.css";
+import { hourglass } from 'ldrs'
 
-function SearchBar() {
+hourglass.register();
+
+const SearchBar = ({setSearchResult}) => {
+
   const [term, setTerm] = useState("");
   const [location, setLocation] = useState("");
   const [sort, setSort] = useState("best_match");
+  const [loader, setLoader] = useState(false);
+
+  const loaderContainer = ()=> {
+    if(loader){
+      return <l-hourglass size="40" bg-opacity="0.1" speed="1.75"  color="white" className={loader}></l-hourglass>;
+    }
+  };
 
   const handleSortClick = (event) => {
     setSort(event.target.id);
@@ -14,6 +26,9 @@ function SearchBar() {
         .classList.remove("selected");
     }
     event.target.classList.add("selected");
+    if(term && location){
+      handleSearchButtonClick(); 
+    }
   };
 
   const handleTermChange = (event) => {
@@ -24,16 +39,22 @@ function SearchBar() {
     setLocation(event.target.value);
   };
 
-  const handleSearchButtonClick = (event) => {
-    event.preventDefault();
-    const msg =
-      "Searching Yelp with " + [term] + ", " + [location] + ", " + [sort];
-    console.log(msg);
+  const handleSearchButtonClick = () => {
+    setLoader(true);
+    YelpSearch(term,location,sort)
+    .then((data)=>{
+      setSearchResult(data);
+      setLoader(false);
+    })
+    .catch((error)=>{
+      console.log(error);
+      setLoader(false);
+    });
   };
 
   return (
-    <div id="searchBar">
-      <div className="sortOptions">
+    <div id="searchBar" className="poppins-regular">
+      <div className="sortOptions poppins-semibold">
         <div>
           <span
             id="best_match"
@@ -84,13 +105,14 @@ function SearchBar() {
               onChange={handleLocationChange}
             />
           </div>
-          <input type="hidden" name="sort" id="sort" value={sort} />
 
-          <button type="submit" onClick={handleSearchButtonClick}>
+          <button type="button" onClick={handleSearchButtonClick}>
             Let's Go
           </button>
         </form>
       </div>
+
+      <div>{loaderContainer()}</div>
     </div>
   );
 }

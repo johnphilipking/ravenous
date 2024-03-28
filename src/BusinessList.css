@@ -1,5 +1,7 @@
 .businessList {
-    max-width: 900px;
+    width: 900px;
+    max-width: 100%;
+    font-size: .9em;
     margin:2rem auto;
     box-sizing: border-box;
     display:grid;
@@ -8,8 +10,19 @@
     grid-gap: 2rem;
 }
 
+.businessList h2 {
+    font-size: 1.2em;
+    margin-bottom: 0;
+}
+
+.businessList h2 a {
+    color: unset;
+    text-decoration: none;
+}
+
 .business {
     box-sizing: border-box;
+    margin-top: 1em;
 }
 
 .businessImage {

@@ -11,25 +11,25 @@ class Business extends React.Component {
   render() {
     return (
       <div className="business">
-        <div className="businessImage" style={{ backgroundImage: "url(" + this.props.business.imageSrc + ")" }}>&nbsp;</div>
-        <h2>{this.props.business.name}</h2>
+        <div className="businessImage" style={{ backgroundImage: "url(" + this.props.business.image_url + ")" }}>&nbsp;</div>
+        <h2><a href={this.props.business.url} target="_blank">{this.props.business.name}</a></h2>
         <div className="details">
           <div>
             <p>
-              {this.props.business.address}
+              {this.props.business.location.address1}
               <br />
-              {this.props.business.city}
+              {this.props.business.location.city}
               <br />
-              {this.props.business.state} {this.props.business.zipCode}
+              {this.props.business.location.state} {this.props.business.location.zip_code}
             </p>
           </div>
           <div>
             <p>
-              <span className="category">{this.props.business.category}</span>
+              <span className="category">{this.props.business.categories[0].title ? this.props.business.categories[0].title : ''}</span>
               <br />
               <span className="rating">{this.props.business.rating} stars</span>
               <br />
-              {this.props.business.reviewCount} reviews
+              {this.props.business.review_count} reviews
             </p>
           </div>
         </div>
@@ -38,13 +38,25 @@ class Business extends React.Component {
   }
 }
 
-function BusinessList(props) {
-  const listContent = props.dataSet.mockData.map((business, i) => (
-    <div key={i}>
-      <Business business={business} />
-    </div>
-  ));
-  return <div className='businessList'>{listContent}</div>;
+function isIterable(obj) {
+  // checks for null and undefined
+  if (obj == null) {
+    return false;
+  }
+  return typeof obj[Symbol.iterator] === 'function';
+}
+
+function BusinessList({searchResult}) {
+  if(isIterable(searchResult)){
+    const listContent = searchResult.map((business, i) => (
+      <div key={i}>
+        <Business business={business} />
+      </div>
+    ));
+    return <div className='businessList'>{listContent}</div>;
+  } else {
+    return <div className='businessList'></div>;
+  } 
 }
 
 export default BusinessList;
